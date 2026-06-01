@@ -1,0 +1,1061 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الروابط الحكومية - قطاع غزة</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        :root {
+            --primary: #16a34a;
+            --primary-dark: #0f7a3a;
+            --primary-soft: #e9fbef;
+            --secondary: #0f766e;
+            --text: #143047;
+            --muted: #64748b;
+            --card: rgba(255, 255, 255, 0.92);
+            --border: rgba(22, 163, 74, 0.16);
+            --danger: #ef4444;
+            --bg: #f7fbf8;
+            --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+            --shadow-sm: 0 8px 18px rgba(15, 23, 42, 0.06);
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Tajawal', Arial, sans-serif;
+            font-weight: 400;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top right, rgba(22, 163, 74, 0.13), transparent 28rem),
+                radial-gradient(circle at bottom left, rgba(15, 118, 110, 0.09), transparent 28rem),
+                linear-gradient(180deg, #f8fafc 0%, #eef8f2 100%);
+        }
+
+        a { color: inherit; }
+
+        .page {
+            width: min(1120px, calc(100% - 28px));
+            margin: 0 auto;
+            padding: 18px 0 26px;
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px;
+            padding: 22px;
+            background:
+                linear-gradient(135deg, rgba(22, 163, 74, 0.96), rgba(15, 118, 110, 0.96)),
+                url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='white' fill-opacity='0.10'%3E%3Ccircle cx='20' cy='20' r='3'/%3E%3Ccircle cx='80' cy='35' r='4'/%3E%3Ccircle cx='50' cy='85' r='3'/%3E%3C/g%3E%3C/svg%3E");
+            box-shadow: var(--shadow);
+            color: #ffffff;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            left: -80px;
+            top: -115px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        .hero-top {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+
+        .visits-counter-card {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 190px;
+            padding: 8px 12px;
+            border-radius: 18px;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.32);
+            box-shadow: 0 10px 24px rgba(6, 95, 70, 0.18);
+            backdrop-filter: blur(10px);
+        }
+
+        .visits-counter-icon {
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.16);
+            font-size: 1.05rem;
+        }
+
+        .visits-counter-content {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .visits-counter-label {
+            font-size: 0.75rem;
+            font-weight: 400;
+            opacity: 0.88;
+        }
+
+        .visits-counter-number {
+            direction: ltr;
+            text-align: right;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+        }
+
+        .visits-counter-card.is-updating .visits-counter-icon {
+            animation: visitPulse 1s ease-in-out infinite;
+        }
+
+        .hero-title {
+            position: relative;
+            z-index: 2;
+            margin: 14px 0 6px;
+            font-size: clamp(22px, 3.5vw, 34px);
+            line-height: 1.55;
+            font-weight: 700;
+            letter-spacing: -0.4px;
+        }
+
+        .hero-subtitle {
+            position: relative;
+            z-index: 2;
+            margin: 0;
+            max-width: 720px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 15px;
+            line-height: 1.75;
+            font-weight: 300;
+        }
+
+        .toolbar {
+            position: sticky;
+            top: 10px;
+            z-index: 20;
+            margin: -16px auto 20px;
+            width: min(780px, calc(100% - 24px));
+        }
+
+        .search-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(14px);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+
+        .search-icon {
+            flex: 0 0 auto;
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            background: var(--primary-soft);
+            color: var(--primary-dark);
+            font-size: 18px;
+        }
+
+        #search-box {
+            width: 100%;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            color: var(--text);
+            font-family: 'Tajawal', Arial, sans-serif;
+            font-size: 15px;
+            font-weight: 400;
+            text-align: right;
+            direction: rtl;
+            padding: 10px 2px;
+        }
+
+        #search-box::placeholder { color: #94a3b8; }
+
+        .section {
+            margin-top: 18px;
+            scroll-margin-top: 96px;
+        }
+
+        .group-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 0 0 10px;
+            padding: 11px 14px;
+            border-radius: 18px;
+            color: #ffffff;
+            background:
+                linear-gradient(135deg, rgba(15, 118, 110, 0.96), rgba(22, 163, 74, 0.96)),
+                radial-gradient(circle at top left, rgba(255, 255, 255, 0.22), transparent 14rem);
+            border: 1px solid rgba(255, 255, 255, 0.32);
+            box-shadow: 0 12px 28px rgba(15, 118, 110, 0.16);
+        }
+
+        .group-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 0;
+            font-size: clamp(16px, 2.2vw, 20px);
+            color: #ffffff;
+            line-height: 1.55;
+            font-weight: 500;
+        }
+
+        .group-title::before {
+            content: "";
+            width: 7px;
+            height: 27px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 6px 14px rgba(255, 255, 255, 0.18);
+        }
+
+        .count {
+            flex: 0 0 auto;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            font-weight: 500;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .card {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            min-height: 92px;
+            padding: 15px 16px;
+            border-radius: 18px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.055);
+            overflow: hidden;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset-inline-start: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 28px rgba(15, 23, 42, 0.10);
+            border-color: rgba(22, 163, 74, 0.34);
+        }
+
+        .new-label {
+            position: absolute;
+            top: 10px;
+            inset-inline-start: 10px;
+            z-index: 2;
+            padding: 4px 9px;
+            border-radius: 999px;
+            background: var(--danger);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 8px 16px rgba(239, 68, 68, 0.22);
+        }
+
+        .card-title {
+            margin: 0;
+            padding-inline-start: 6px;
+            color: #14532d;
+            font-size: 15px;
+            line-height: 1.65;
+            font-weight: 400;
+        }
+
+        .card-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-width: 82px;
+            min-height: 36px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 8px 16px rgba(22, 163, 74, 0.18);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 22px rgba(22, 163, 74, 0.24);
+            filter: brightness(1.03);
+        }
+
+        .btn::after {
+            content: "↗";
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            line-height: 1;
+        }
+
+        .empty-state {
+            display: none;
+            margin: 20px auto 0;
+            max-width: 640px;
+            padding: 18px;
+            text-align: center;
+            border-radius: 18px;
+            background: #ffffff;
+            color: var(--muted);
+            box-shadow: var(--shadow-sm);
+            border: 1px dashed rgba(22, 163, 74, 0.36);
+            font-weight: 500;
+        }
+
+        .footer-card {
+            margin-top: 24px;
+            padding: 14px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #ffffff, #ecfdf5);
+            border: 1px solid rgba(22, 163, 74, 0.20);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+        }
+
+        .footer-text {
+            font-weight: 500;
+            color: var(--text);
+            font-size: 15px;
+        }
+
+        .footer-link {
+            display: inline-grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 14px;
+            background: #dcfce7;
+            transition: transform 0.2s ease;
+        }
+
+        .footer-link:hover { transform: scale(1.05); }
+        .footer-link img { width: 23px; height: 23px; }
+
+        .swal2-title-custom,
+        .swal2-html-custom,
+        .swal2-confirm-button-custom { font-family: 'Tajawal', Arial, sans-serif !important; }
+        .swal2-title-custom { font-weight: 700; font-size: 25px; }
+        .swal2-html-custom { font-weight: 400; line-height: 1.85; }
+        .swal2-confirm-button-custom {
+            font-weight: 700 !important;
+            border-radius: 12px !important;
+            background: var(--primary) !important;
+            padding: 9px 24px !important;
+        }
+
+        @keyframes visitPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        @media (max-width: 1000px) {
+            .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 760px) {
+            .toolbar { position: static; margin-top: -14px; }
+            .grid { grid-template-columns: 1fr; gap: 10px; }
+        }
+
+        @media (max-width: 640px) {
+            .page {
+                width: min(100% - 18px, 1120px);
+                padding-top: 10px;
+            }
+
+            .hero {
+                border-radius: 20px;
+                padding: 18px 14px 28px;
+            }
+
+            .hero-top {
+                align-items: stretch;
+            }
+
+            .visits-counter-card {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hero-title { font-size: 22px; }
+            .hero-subtitle { font-size: 13.5px; }
+
+            .toolbar {
+                width: calc(100% - 12px);
+                margin-bottom: 16px;
+            }
+
+            .search-card {
+                border-radius: 16px;
+                padding: 7px 9px;
+            }
+
+            .search-icon {
+                width: 34px;
+                height: 34px;
+                border-radius: 12px;
+            }
+
+            #search-box { font-size: 14px; }
+
+            .group-header {
+                align-items: center;
+                border-radius: 16px;
+                padding: 10px 12px;
+            }
+
+            .group-title { font-size: 16px; }
+
+            .card {
+                min-height: 78px;
+                border-radius: 16px;
+                padding: 12px 13px;
+            }
+
+            .card-title {
+                font-size: 14.5px;
+                line-height: 1.6;
+            }
+
+            .btn {
+                min-width: 74px;
+                min-height: 34px;
+                padding: 7px 10px;
+                border-radius: 11px;
+                font-size: 13px;
+            }
+
+            .footer-card { border-radius: 18px; }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <section class="hero">
+            <div class="hero-top">
+                <div class="visits-counter-card" id="visits-counter-card" aria-label="عداد الزيارات">
+                    <span class="visits-counter-icon" aria-hidden="true">👁️</span>
+                    <span class="visits-counter-content">
+                        <span class="visits-counter-label">عدد الزيارات</span>
+                        <span class="visits-counter-number" id="visits-counter">72023</span>
+                    </span>
+                </div>
+            </div>
+            <h1 class="hero-title">الروابط الحكومية - قطاع غزة</h1>
+            <p class="hero-subtitle">جميع روابط الوزارات في مكان واحد</p>
+        </section>
+
+        <div class="toolbar">
+            <div class="search-card">
+                <div class="search-icon">⌕</div>
+                <input type="text" id="search-box" placeholder="ابحث في الروابط، مثال: بوابة، وزارة، خدمات">
+            </div>
+        </div>
+
+        <div id="links-wrapper">
+                            <section class="section" data-section>
+                    <div class="group-header">
+                        <h2 class="group-title">روابط وزارة التربية والتعليم العالي</h2>
+                        <span class="count">13 روابط</span>
+                    </div>
+
+                    <div class="grid">
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">موقع وزارة التربية والتعليم العالي</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://www.mohe.ps/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">خدمات وزارة التربية والتعليم</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://eservices.mohe.ps/index.php" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">بوابة الدعم الفني لخدمات التعليم عن بعد</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://support.inspirete.net/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">نظام إدارة النقاط التعليمية</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://edupoints.inspirete.net/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">بوابة روافد التعليمية</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://new.rawafed.edu.ps/ar/portal" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">بوابة الطالب</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://eservices.mohe.ps/p/student.php" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">بوابة الاستقطاب (الخاصة بوظائف التعليم)</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://eservices.mohe.ps/jobs-gate/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">نتائج الثانوية العامة</h3>
+
+                                <div class="card-actions">
+                                    <a href="http://tawjihi.mohe.ps/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">المكتبة الإلكترونية العامة</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://eservices.mohe.ps/general_library/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">المؤسسات التعليمية الخاصة</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://eservices.mohe.ps/kg_license/institutes.php" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">خارطة المدارس الحكومية</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://www.mohe.ps/schools-map/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">الدفع من المستحقات للتعليم</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://eservices.mohe.ps/fees/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">المرشد الإلكتروني للطلاب</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://eservices.mohe.ps/e-guidance/index.php" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                            </div>
+                </section>
+                            <section class="section" data-section>
+                    <div class="group-header">
+                        <h2 class="group-title">روابط وزارة الاتصالات وتكنولوجيا المعلومات</h2>
+                        <span class="count">7 روابط</span>
+                    </div>
+
+                    <div class="grid">
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">موقع وزارة الاتصالات</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://www.mtit.gov.ps/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">نظام الدخول الموحد المركزي</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://elogin.gov.ps/new/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">بوابة مكتبي الحكومية</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://maktabi.mtit.gov.ps/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">بوابة بياناتي الحكومية</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://myinfo.eapp.gov.ps/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">منظومة بنكي أونلاين (البريد)</h3>
+
+                                <div class="card-actions">
+                                    <a href="http://eservices.mtit.gov.ps/epost_new" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">الاستعلام الحكومي المركزي</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://query.gov.ps/index.php/c_new" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">البوابة الموحدة للمعاملات الحكومية</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://e.services.gov.ps/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                            </div>
+                </section>
+                            <section class="section" data-section>
+                    <div class="group-header">
+                        <h2 class="group-title">روابط ديوان الموظفين العام</h2>
+                        <span class="count">3 روابط</span>
+                    </div>
+
+                    <div class="grid">
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">موقع ديوان الموظفين العام</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://www.diwan.ps/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">خدمات ديوان الموظفين العام</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://eservices.diwan.ps/dashboard" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">نظام الشكاوى المركزي</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://complaints.eapp.gov.ps/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                            </div>
+                </section>
+                            <section class="section" data-section>
+                    <div class="group-header">
+                        <h2 class="group-title">روابط وزارة المالية</h2>
+                        <span class="count">2 روابط</span>
+                    </div>
+
+                    <div class="grid">
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">موقع وزارة المالية</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://www.mof.gov.ps/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">خدمات وزارة المالية</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://eservices.mof.gov.ps/eservices/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                            </div>
+                </section>
+                            <section class="section" data-section>
+                    <div class="group-header">
+                        <h2 class="group-title">روابط وزارة الداخلية</h2>
+                        <span class="count">4 روابط</span>
+                    </div>
+
+                    <div class="grid">
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">موقع وزارة الداخلية والأمن الوطني</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://moi.gov.ps/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">بوابة خدمات المواطنين</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://eservice.moi.gov.ps/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">بوابة خدمات الموظفين</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://moidev.moi.gov.ps/login.aspx" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">استعلام المخالفات المرورية</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://police.ps/police/traffic_service/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                            </div>
+                </section>
+                            <section class="section" data-section>
+                    <div class="group-header">
+                        <h2 class="group-title">روابط تطبيقات الهواتف الذكية</h2>
+                        <span class="count">9 روابط</span>
+                    </div>
+
+                    <div class="grid">
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">تطبيق خدمات المواطنين</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://play.google.com/store/apps/details?id=ps.moi.servicescitizens&amp;hl=ar&amp;gl=US" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">تطبيق الدخول الموحد المركزي</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://play.google.com/store/apps/details?id=ps.gov.mtit.sso&amp;hl=ar&amp;gl=US" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">تطبيق بنكي أونلاين (البريد)</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://play.google.com/store/apps/details?id=mtit.gov.ps.banky" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">تطبيق الاستعلام الإلكتروني (الراتب)</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://play.google.com/store/apps/details?id=ps.gov.mtit.mservices" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">تطبيق حكومي</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://play.google.com/store/apps/details?id=ps.gov.mtit.hokomi" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">تطبيق بلدية غزة</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://play.google.com/store/apps/details?id=gaza.mincipality&amp;hl=ar&amp;gl=US" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">تطبيق ديوان الموظفين العام</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://play.google.com/store/apps/details?id=ps.diwan.gpc" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">تطبيق صحتي مع الأونروا</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://play.google.com/store/apps/details?id=com.unrwa.encd&amp;hl=ar&amp;gl=US" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">تطبيق صحتي فلسطين</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://play.google.com/store/apps/details?id=ps.moh.sehatty&amp;hl=ar&amp;gl=US" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                            </div>
+                </section>
+                            <section class="section" data-section>
+                    <div class="group-header">
+                        <h2 class="group-title">روابط وزارة التنمية الاجتماعية</h2>
+                        <span class="count">3 روابط</span>
+                    </div>
+
+                    <div class="grid">
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">موقع وزارة التنمية</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://www.mosa.gov.ps/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">منظومة تحديث بيانات المواطنين (غزة)</h3>
+
+                                <div class="card-actions">
+                                    <a href="http://mosa.e-gaza.com/login" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">استمارة الاحتياج للمتضررين من الحرب</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://donate.mosd.gov.ps/war-form" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                            </div>
+                </section>
+                            <section class="section" data-section>
+                    <div class="group-header">
+                        <h2 class="group-title">روابط وزارة الاقتصاد الوطني</h2>
+                        <span class="count">5 روابط</span>
+                    </div>
+
+                    <div class="grid">
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">موقع وزارة الاقتصاد</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://www.mne.ps/" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">منظومة التسجيل في الغاز للمواطنين</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://www.e-gaza.com/login" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">خدمة الاستفادة من الغاز للمخابز</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://e-gaza.com/bakery-form" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">خدمة الاستفادة من الغاز لغواطس المياه</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://e-gaza.com/water-gas" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                                    <article class="card" data-card>
+                                
+                                <h3 class="card-title">تسجيل أضرار المنشآت الاقتصادية خلال حرب 2023</h3>
+
+                                <div class="card-actions">
+                                    <a href="https://e.services.gov.ps/apps/eco_damage2025/1/create" class="btn" target="_blank" rel="noopener noreferrer">زيارة</a>
+                                </div>
+                            </article>
+                                            </div>
+                </section>
+                    </div>
+
+        <div class="empty-state" id="empty-state">لا توجد نتائج مطابقة لكلمة البحث.</div>
+
+        <footer class="footer-card">
+            <span class="footer-text">تصميم المهندس فراس محمد سحويل  </span>
+            <a href="https://wa.me/+972594344675" target="_blank" rel="noopener noreferrer" class="footer-link" aria-label="WhatsApp">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+            </a>
+        </footer>
+    </main>
+
+    <script>
+        window.addEventListener('load', function () {
+            if (!sessionStorage.getItem('govLinksPopupDisplayed')) {
+                Swal.fire({
+                    title: '<span class="swal2-title-custom">مرحبًا</span>',
+                    html: '<span class="swal2-html-custom">هذا الموقع صدقة جارية عن أرواح شهداء مدينة بيت حانون الأبرار، دعواتكم لهم بالرحمة والمغفرة.</span>',
+                    icon: 'success',
+                    confirmButtonText: 'حسنًا',
+                    customClass: {
+                        confirmButton: 'swal2-confirm-button-custom'
+                    }
+                }).then(function () {
+                    sessionStorage.setItem('govLinksPopupDisplayed', 'true');
+                });
+            }
+
+            const searchInput = document.getElementById('search-box');
+            const sections = Array.from(document.querySelectorAll('[data-section]'));
+            const emptyState = document.getElementById('empty-state');
+            const visitsCounter = document.getElementById('visits-counter');
+            const visitsCounterCard = document.getElementById('visits-counter-card');
+
+            function formatCounterNumber(value) {
+                const number = Number(value || 0);
+                return number.toLocaleString('en-US');
+            }
+
+            function updateVisitsCounter(countOnly) {
+                if (!visitsCounter) return;
+
+                const endpoint = '?visit_counter=1' + (countOnly ? '&count_only=1' : '');
+                if (visitsCounterCard) visitsCounterCard.classList.add('is-updating');
+
+                fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    cache: 'no-store'
+                })
+                    .then(function (response) { return response.json(); })
+                    .then(function (data) {
+                        if (data && typeof data.total !== 'undefined') {
+                            visitsCounter.textContent = formatCounterNumber(data.total);
+                        }
+                    })
+                    .catch(function () {})
+                    .finally(function () {
+                        if (visitsCounterCard) visitsCounterCard.classList.remove('is-updating');
+                    });
+            }
+
+            updateVisitsCounter(false);
+            setInterval(function () {
+                updateVisitsCounter(true);
+            }, 20000);
+
+            function filterCards() {
+                const filter = searchInput.value.trim().toLowerCase();
+                let visibleCardsCount = 0;
+
+                sections.forEach(function (section) {
+                    const cards = Array.from(section.querySelectorAll('[data-card]'));
+                    let sectionVisibleCards = 0;
+
+                    cards.forEach(function (card) {
+                        const title = card.querySelector('.card-title').textContent.toLowerCase();
+                        const isVisible = !filter || title.includes(filter);
+
+                        card.style.display = isVisible ? 'flex' : 'none';
+
+                        if (isVisible) {
+                            sectionVisibleCards++;
+                            visibleCardsCount++;
+                        }
+                    });
+
+                    section.style.display = sectionVisibleCards > 0 ? 'block' : 'none';
+                });
+
+                emptyState.style.display = visibleCardsCount > 0 ? 'none' : 'block';
+            }
+
+            searchInput.addEventListener('input', filterCards);
+        });
+    </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"1a09ef8a34cf4ef9911950035033cc39","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
